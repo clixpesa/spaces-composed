@@ -1,0 +1,40 @@
+{
+  "name": "@spaces-composed/hardhat",
+  "version": "1.0.0",
+  "license": "Apache 2.0",
+  "scripts": {
+    "test": "hardhat test",
+    "test-local": "hardhat test --network hardhat",
+    "accounts": "hardhat accounts",
+    "devchain": "npx celo-devchain --port 8545",
+    "deploy": "hardhat deploy --export-all ../spaces-dapp/blockchain/spaces_contracts.json",
+    "deploy-reset-watch": "hardhat deploy --reset --watch --export-all ../spaces-dapp/blockchain/spaces_contracts.json",
+    "watch": "node scripts/watch.js",
+    "fork-mainnet": "ganache --fork.url https://forno.celo.org --wallet.mnemonic 'concert load couple harbor equip island argue ramp clarify fence smart topic' --wallet.accountKeysPath './account_keys.json' --gasPrice 875000000"
+  },
+  "devDependencies": {
+    "@ethersproject/providers": "^5.4.7",
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
+    "@nomiclabs/hardhat-etherscan": "^3.0.0",
+    "@typechain/ethers-v5": "^10.1.0",
+    "@typechain/hardhat": "^6.1.2",
+    "@types/chai": "^4.2.0",
+    "@types/mocha": "^9.1.0",
+    "chai": "^4.2.0",
+    "ethers": "^5.4.7",
+    "hardhat": "^2.11.1",
+    "hardhat-deploy": "^0.11.14",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.7.21",
+    "ts-node": ">=8.0.0",
+    "typechain": "^8.1.0",
+    "typescript": ">=4.5.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "node-watch": "^0.7.3"
+  }
+}

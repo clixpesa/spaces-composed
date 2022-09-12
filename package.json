@@ -1,0 +1,28 @@
+{
+  "name": "@spaces-composed/monorepo",
+  "version": "1.0.0",
+  "description": "Clixpesa spaces dapp based on celo-composer",
+  "main": "index.js",
+  "repository": "https://github.com/clixpesa/spaces-composed.git",
+  "author": "Kachi <kachdekan@gmail.com>",
+  "license": "Apache 2.0",
+  "homepage": "https://github.com/clixpesa/spaces-composed#readme",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "hardhat:test": "yarn workspace @spaces-composed/hardhat test",
+    "hardhat:deploy": "yarn workspace @spaces-composed/hardhat deploy",
+    "hardhat:watch": "yarn workspace @spaces-composed/hardhat watch",
+    "hardhat:accounts": "yarn workspace @spaces-composed/hardhat accounts",
+    "hardhat:devchain": "yarn workspace @spaces-composed/hardhat devchain",
+    "hardhat:fork-mainnet": "yarn workspace @spaces-composed/hardhat fork-mainnet",
+    "hardhat:deploy-reset-watch": "yarn workspace @spaces-composed/hardhat deploy-reset-watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare-hardhat": "cd packages/hardhat && yarn && npx hardhat typechain && yarn deploy",
+    "build-ui": "yarn prepare-hardhat && cd packages/spaces-dapp && yarn && yarn build"
+  },
+  "private": true
+}
