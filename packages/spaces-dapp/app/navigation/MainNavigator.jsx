@@ -68,7 +68,7 @@ function BottomTabNavigator() {
           title: 'Spaces',
           tabBarIcon: ({ focused }) => (
             <TabBarIcon
-              name={focused ? 'wallet-3-fill' : 'wallet-3-line'}
+              name={focused ? 'safe-2-fill' : 'safe-2-line'}
               bgc={focused ? '#99F6E4' : '#fff'}
               color="#0F766E"
             />
@@ -89,7 +89,7 @@ function BottomTabNavigator() {
           title: 'More',
           tabBarIcon: ({ focused }) => (
             <TabBarIcon
-              name={focused ? 'pantone-fill' : 'pantone-line'}
+              name={focused ? 'settings-3-fill' : 'settings-3-line'}
               bgc={focused ? '#99F6E4' : '#fff'}
               color="#0F766E"
             />
