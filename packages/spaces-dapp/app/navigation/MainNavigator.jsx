@@ -8,7 +8,7 @@ import Icon from 'react-native-remix-icon' //Fix/Add types
 
 //Screens
 import { HomeScreen, DummyScreen } from '@spaces/features/essentials'
-import { SpacesScreen } from '@spaces/features/spaces'
+import { SpacesScreen, AddNameScreen } from '@spaces/features/spaces'
 import { MoreScreen, AccountScreen } from '@spaces/features/more'
 
 const MainStack = createNativeStackNavigator()
@@ -24,6 +24,7 @@ export default function MainNavigator() {
       <MainStack.Group screenOptions={{ presentation: 'modal' }}>
         <MainStack.Screen name="Account" component={AccountScreen} />
         <MainStack.Screen name="DummyModal" component={DummyScreen} />
+        <MainStack.Screen name="AddName" component={AddNameScreen} />
       </MainStack.Group>
     </MainStack.Navigator>
   )

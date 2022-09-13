@@ -11,12 +11,14 @@ import {
   SectionList,
   Pressable,
 } from 'native-base'
-import { Feather } from '@native-base/icons'
+import { Feather } from 'react-native-vector-icons'
 import Remixicon from 'react-native-remix-icon' //Fix/Add types
 import { useNavigation } from '@react-navigation/native'
 import { SectionHeader } from '@spaces/components'
+import { useWalletConnect } from "@walletconnect/react-native-dapp";
 
-export default function AccountScreen() {
+export default function AccountScreen({navigation}){
+  const connector = useWalletConnect()
   const USER = {
     fullName: 'Akimbo Keya',
     nameInitials: 'AK',
@@ -232,7 +234,7 @@ export default function AccountScreen() {
             pr="4"
             minW="75%"
             _text={{ color: 'primary.100', fontWeight: 'semibold', mb: '0.5' }}
-            onPress={() => console.log('Log out')}
+            onPress={() => connector.killSession()}
           >
             Log out
           </Button>

@@ -1,5 +1,5 @@
 import { Box, Stack, Text, Heading, HStack, Button, Icon, Image, ScrollView } from 'native-base'
-import { Feather } from '@native-base/icons' //Fix feather not font
+import { Feather } from 'react-native-vector-icons' //Fix feather not font
 
 export default function HomeScreen() {
   return (
