@@ -1,5 +1,5 @@
 import "./shims";
-import App from "./App";
+import App from "./app/App";
 import { registerRootComponent, scheme } from "expo";
 const {
 	default: AsyncStorage,
