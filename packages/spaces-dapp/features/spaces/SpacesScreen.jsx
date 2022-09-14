@@ -7,8 +7,8 @@ export default function SpacesScreen() {
   return (
     <Box flex={1} bg="#fff" alignItems="center" justifyContent="center">
       <Text>Savings Here!!</Text>
-      <Button onPress={() => navigation.navigate('AddName')}>
-        AddName
+      <Button onPress={() => navigation.navigate('SelectContacts')}>
+        Create Group Space
       </Button>
     </Box>
   )
