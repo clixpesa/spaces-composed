@@ -5,6 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 import * as Contacts from 'expo-contacts';
 import { TouchableOpacity } from 'react-native';
 
+//TODO! Maintain unique selctions
+//TODO! Handle submissions.
+
 export default function SelectContactsScreen() {
   const [selectedContacts, setSelectedContacts] = useState([])
   const [contactList, setContactList] = useState()
