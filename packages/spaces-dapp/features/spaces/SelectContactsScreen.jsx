@@ -53,7 +53,7 @@ export default function SelectContactsScreen() {
           {selectedContacts.map((item, index) => {
             return(
               <TouchableOpacity onPress={()=>{handleDeselect(item)}}>
-                <SelectedContact nameInitials={item.name[0].toUpperCase()} fullName={item.name}/>
+                <SelectedContact key={index} nameInitials={item.name[0].toUpperCase()} fullName={item.name}/>
               </TouchableOpacity>
               
             )
