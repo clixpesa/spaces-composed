@@ -1,13 +1,19 @@
 import { StatusBar } from 'expo-status-bar'
 import { Provider } from 'react-redux'
+import { useEffect } from 'react'
+import { LogBox } from "react-native"
 import { NativeBaseProvider, extendTheme } from 'native-base'
 import AppNavigator from './navigation'
 import store from './store'
 
 export default function App() {
+  // avoid warnings showing up in app. comment below code if you want to see warnings.
+	useEffect(() => {
+		LogBox.ignoreLogs(["Possible Unhandled Promise Rejection ..."]);
+	}, []);
   const theme = extendTheme({
     colors: {
-      // Add new color
+      // Add new colorR
       primary: {
         50: '#F0FDFA',
         100: '#CCFBF1',
