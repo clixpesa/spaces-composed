@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Box, HStack, Text, Avatar, VStack, FlatList, Button } from 'native-base'
-import { useSelector } from 'react-redux'
+import { useDispatch }  from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import * as Contacts from 'expo-contacts';
 import { TouchableOpacity } from 'react-native';
+import { setSelectedMembers } from './spacesSlice';
 
 //TODO! Maintain unique selctions
 //TODO! Handle submissions.
 
 export default function SelectContactsScreen() {
+  const dispatch = useDispatch()
+  const navigation = useNavigation()
   const [selectedContacts, setSelectedContacts] = useState([])
   const [contactList, setContactList] = useState()
     useEffect(() => {
@@ -28,13 +31,17 @@ export default function SelectContactsScreen() {
   }, []);
 
  const  handleSelected = (selected) => {
-   const selectedList = [...selectedContacts, selected ];
+  const selectedInfo = {
+    id: selected.lookupKey,
+    name: selected.name,
+    phoneNo:  selected.phoneNumbers ? getContactData(selected.phoneNumbers, "number")[0] : "No Number"
+  }
+   const selectedList = [...selectedContacts, selectedInfo];
 	 setSelectedContacts(selectedList);
-   //console.log(selectedContacts)
  }
 
  const handleDeselect = (deselected) => {
-   const filtredList = selectedContacts.filter(el => el.name !== deselected.name)
+   const filtredList = selectedContacts.filter(el => el.id !== deselected.id)
    setSelectedContacts(filtredList);
  }
 
@@ -60,7 +67,7 @@ export default function SelectContactsScreen() {
       <FlatList
       showsVerticalScrollIndicator={false}
       data={contactList}
-      //keyExtractor={item => item.id}
+      keyExtractor={item => item.lookupKey}
       renderItem={({item})=>(
       <TouchableOpacity onPress={() => {handleSelected(item)}}>
         <ContactItem 
@@ -70,9 +77,11 @@ export default function SelectContactsScreen() {
         /></TouchableOpacity>
       )}/>
       </VStack>
-      <Button position="absolute"  bottom={6} right={6} rounded="3xl" w="25%"
-      _text={{ color: 'primary.100', fontWeight: 'semibold', mb: '0.5' }}
-      onPress={() => {}}
+      <Button position="absolute" variant="subtle" bottom={6} left="20%" rounded="3xl" w="60%"
+      _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}
+      onPress={() => {
+        dispatch(setSelectedMembers(selectedContacts))
+        navigation.navigate('Customize')}}
       >
         Next
       </Button>
@@ -104,7 +113,6 @@ function SelectedContact (props){
     <Text fontSize="xs">{props.fullName}</Text>
       </VStack>
   )
-  
 }
 
 const getContactData = (data, property) => {
