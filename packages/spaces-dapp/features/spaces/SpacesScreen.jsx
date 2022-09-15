@@ -8,35 +8,28 @@ import {
   Image,
   HStack,
   Icon,
+  Pressable
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-// import { MaterialCommunityIcons } from 'native-base';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function SpacesScreen() {
   const navigation = useNavigation();
   return (
     <Box
       flex={1}
-      // bg="#fff"
-      alignItems="center"
+      bg="muted.50"
       justifyContent="flex-start"
       p={6}
     >
-      <Box p={2}>
+      <Box pt={2} alignItems="center">
         <Heading>Start saving together today</Heading>
         <Text>
           What would you like to save for ? Who would you like to save with ?
         </Text>
       </Box>
       <Box>
-        <Text></Text>
-      </Box>
-      {/* <Button onPress={() => navigation.navigate('AddName')}>
-        Create Spaces
-      </Button> */}
-
-      <Box>
-        <Text>Personal Saving spaces</Text>
+        <Text py={3} fontSize="sm">Personal Saving spaces</Text>
         <HStack>
           <Box bg="#fff" rounded="xl" padding="2" marginRight="2" width="50%">
             <AspectRatio width="100%">
@@ -50,17 +43,10 @@ export default function SpacesScreen() {
             </AspectRatio>
             <HStack mt="2" display="flex" justifyContent="space-between">
               <VStack>
-                <Text bold>Save for a Goal</Text>
+                <Text fontWeight="semibold">Save for a Goal</Text>
                 <Text>Save Today</Text>
               </VStack>
               <Box bg="primary.100" rounded="full" alignItems="center" ml="1">
-                <Icon
-                  // as={MaterialCommunityIcons}
-                  name="plus"
-                  size="lg"
-                  color="primary.600"
-                  m="2"
-                />
               </Box>
             </HStack>
           </Box>
@@ -81,13 +67,6 @@ export default function SpacesScreen() {
                 <Text>Savings Space</Text>
               </VStack>
               <Box bg="primary.100" rounded="full" alignItems="center" ml="1">
-                <Icon
-                  // as={MaterialCommunityIcons}
-                  name="plus"
-                  size="lg"
-                  color="primary.600"
-                  m="2"
-                />
               </Box>
             </HStack>
           </Box>
@@ -95,7 +74,7 @@ export default function SpacesScreen() {
       </Box>
 
       <Box>
-        <Text>Group Saving spaces</Text>
+        <Text py={3} fontSize="sm">Group Saving spaces</Text>
         <HStack>
           <Box bg="#fff" rounded="xl" padding="2" marginRight="2" width="50%">
             <AspectRatio width="100%">
@@ -114,7 +93,7 @@ export default function SpacesScreen() {
               </VStack>
               <Box bg="primary.100" rounded="full" alignItems="center" ml="1">
                 <Icon
-                  // as={MaterialCommunityIcons}
+                  as={MaterialCommunityIcons}
                   name="plus"
                   size="lg"
                   color="primary.600"
@@ -123,8 +102,7 @@ export default function SpacesScreen() {
               </Box>
             </HStack>
           </Box>
-
-          <Box bg="#fff" rounded="xl" padding="2" width="50%">
+          <Pressable bg="#fff" rounded="xl" padding="2" width="50%" onPress={()=>{navigation.navigate("SelectContacts")}}>
             <AspectRatio w="100%">
               <Image
                 source={{
@@ -136,20 +114,13 @@ export default function SpacesScreen() {
             </AspectRatio>
             <HStack mt="2" display="flex" justifyContent="space-between">
               <VStack>
-                <Text bold>Start a Group</Text>
+                <Text fontWeight="semibold">Start a Group</Text>
                 <Text>Savings Space</Text>
               </VStack>
               <Box bg="primary.100" rounded="full" alignItems="center" ml="1">
-                <Icon
-                  // as={MaterialCommunityIcons}
-                  name="plus"
-                  size="lg"
-                  color="primary.600"
-                  m="2"
-                />
               </Box>
             </HStack>
-          </Box>
+          </Pressable>
         </HStack>
       </Box>
     </Box>
