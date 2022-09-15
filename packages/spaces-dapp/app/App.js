@@ -13,7 +13,7 @@ export default function App() {
 	}, []);
   const theme = extendTheme({
     colors: {
-      // Add new colorR
+      // Add new color
       primary: {
         50: '#F0FDFA',
         100: '#CCFBF1',
