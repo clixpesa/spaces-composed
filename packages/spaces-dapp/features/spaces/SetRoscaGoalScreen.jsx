@@ -2,10 +2,12 @@ import { Box, Text, VStack, Spacer, Button, Stack, HStack, Input, Pressable, Act
 import { TouchableOpacity } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { setCtbSchedule, setDisbSchedule, setGoalAmount } from './spacesSlice'
+import { useNavigation } from '@react-navigation/native'
+import { setCtbSchedule, setDisbSchedule, setGoalAmount, setUserSpaces } from './spacesSlice'
 
 export default function SetRoscaGoalScreen() {
   const dispatch = useDispatch()
+  const navigation = useNavigation()
   const roscaSchedule = useSelector((state) => state.spaces.roscaSchedule)
   const spaceInfo = useSelector((state) => state.spaces.spaceInfo)
   const [amount, setAmount] = useState(0)
@@ -113,7 +115,10 @@ export default function SetRoscaGoalScreen() {
       _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}>Skip</Button>
         <Button rounded="3xl" w="60%"
       _text={{ color: 'primary.100', fontWeight: 'semibold', mb: '0.5' }}
-      onPress={()=>{console.log(spaceInfo)}}>Continue</Button>
+      onPress={()=>{
+        navigation.navigate("RoscaHome")
+        dispatch(setUserSpaces())
+      }}>Continue</Button>
         </Stack>
       </VStack>
     </Box>

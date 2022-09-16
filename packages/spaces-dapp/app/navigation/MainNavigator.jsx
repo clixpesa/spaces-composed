@@ -1,14 +1,13 @@
 import React from 'react'
 import { Box, Text, Avatar, Pressable, HStack } from 'native-base'
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation} from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Icon from 'react-native-remix-icon' //Fix/Add types
 
 //Screens
 import { HomeScreen, DummyScreen } from '@spaces/features/essentials'
-import { SpacesScreen, AddNameScreen, SelectContactsScreen, CustomizeScreen, SetRoscaGoalScreen } from '@spaces/features/spaces'
+import { SpacesScreen, AddNameScreen, SelectContactsScreen, CustomizeScreen, SetRoscaGoalScreen, RoscaHomeScreen } from '@spaces/features/spaces'
 import { MoreScreen, AccountScreen } from '@spaces/features/more'
 
 const MainStack = createNativeStackNavigator()
@@ -21,6 +20,7 @@ export default function MainNavigator() {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
+      <MainStack.Screen name="RoscaHome" component={RoscaHomeScreen} />
       <MainStack.Group screenOptions={{ presentation: 'modal' }}>
         <MainStack.Screen name="Account" component={AccountScreen} />
         <MainStack.Screen name="DummyModal" component={DummyScreen} />

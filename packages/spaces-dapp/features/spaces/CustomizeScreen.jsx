@@ -17,7 +17,7 @@ export default function CustomizeScreen() {
 
       <Image source={{
       uri: "https://images.unsplash.com/photo-1493655430214-3dd7718460bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-      }} alt="Your groups photo" height="35%" minH={240}/>
+      }} alt="Your groups photo" height="35%" maxH={240}/>
       <FormControl alignItems="center" mt={2}>
       <Stack space={2} w="80%" >
         <Stack>
