@@ -10,6 +10,9 @@
   "workspaces": {
     "packages": [
       "packages/*"
+    ],
+    "nohoist": [
+      "@expo/vector-icons"
     ]
   },
   "scripts": {
