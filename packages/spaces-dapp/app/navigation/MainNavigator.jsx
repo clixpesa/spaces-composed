@@ -8,7 +8,7 @@ import Icon from 'react-native-remix-icon' //Fix/Add types
 
 //Screens
 import { HomeScreen, DummyScreen } from '@spaces/features/essentials'
-import { SpacesScreen, AddNameScreen, SelectContactsScreen, CustomizeScreen } from '@spaces/features/spaces'
+import { SpacesScreen, AddNameScreen, SelectContactsScreen, CustomizeScreen, SetRoscaGoalScreen } from '@spaces/features/spaces'
 import { MoreScreen, AccountScreen } from '@spaces/features/more'
 
 const MainStack = createNativeStackNavigator()
@@ -27,6 +27,7 @@ export default function MainNavigator() {
         <MainStack.Screen name="AddName" component={AddNameScreen} />
         <MainStack.Screen name="SelectContacts" component={SelectContactsScreen} />
         <MainStack.Screen name="Customize" component={CustomizeScreen} />
+        <MainStack.Screen name="RoscaGoal" component={SetRoscaGoalScreen} />
       </MainStack.Group>
     </MainStack.Navigator>
   )

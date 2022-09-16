@@ -3,11 +3,13 @@ import { CheckIcon } from 'native-base'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { setSpaceInfo } from './spacesSlice'
+import { useNavigation } from '@react-navigation/native'
 
 export default function CustomizeScreen() {
   const suggestions = ["Savings", "Vacation", "Chama", "Gift", "Sherehe", "Emergency", "Masomo"]
   const selectedMembers = useSelector((state) => state.spaces.selectedMembers)
   const dispatch = useDispatch()
+  const navigation = useNavigation()
   const [spaceName, setSpaceName] = useState('')
   const [spaceType, setSpaceType] = useState('')
   return (
@@ -55,6 +57,7 @@ export default function CustomizeScreen() {
       _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}
       onPress={() => {
         dispatch(setSpaceInfo({spaceName, spaceType}))
+        navigation.navigate("RoscaGoal")
       }}
       >
         Continue
