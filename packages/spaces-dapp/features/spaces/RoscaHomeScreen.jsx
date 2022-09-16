@@ -1,9 +1,21 @@
 import { Box, Text, Image, HStack, Button, Spacer, VStack, Progress, Avatar} from 'native-base'
+import { HeaderBackButton } from '@react-navigation/elements'
+import { useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { SectionHeader } from '@spaces/components'
 
-export default function RoscaHomeScreen() {
+export default function RoscaHomeScreen({navigation}) {
+ 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: (props) => {
+        return(
+          <HeaderBackButton {...props} onPress={()=>{navigation.navigate("Spaces")}}/>
+        )
+      }
+    });
+  }, [navigation]); 
 
+  
   const prog = (300.89/5000.00)*100
   return (
     <Box flex={1} bg="muted.100" >

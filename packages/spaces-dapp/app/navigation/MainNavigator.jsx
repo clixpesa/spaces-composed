@@ -1,8 +1,7 @@
 import React from 'react'
 import { Box, Text, Avatar, Pressable, HStack } from 'native-base'
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation} from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Icon from 'react-native-remix-icon' //Fix/Add types
 

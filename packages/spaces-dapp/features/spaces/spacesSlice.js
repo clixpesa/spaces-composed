@@ -15,7 +15,12 @@ const initialState = {
       //manual/manual, mon/weekly/monthly, date/once 
       disbSchedule: {day: "Tue", occurrence: "Weekly"}
     },
-  userSpaces: []
+  userSpaces: {
+    roscas: [],
+    personal: [],
+    regular: [],
+    mchango: [],
+  }
 }
 
 const spacesSlice = createSlice({
@@ -41,10 +46,18 @@ const spacesSlice = createSlice({
     },
     setGoalAmount: (state, { payload }) => {
       state.spaceInfo.goalAmount = payload
+    },
+    setUserSpaces: (state) => {
+      if(state.spaceInfo.type === "rosca"){
+        state.userSpaces.roscas.push(state.spaceInfo)
+      }else if(state.spaceInfo.type === "personal"){
+        state.userSpaces.personal.push(state.spaceInfo)
+      }
+      console.log(state.userSpaces)
     }
   }
 })
 
-export const { setSelectedMembers, setSpaceInfo, setCtbSchedule, setDisbSchedule, setGoalAmount } = spacesSlice.actions
+export const { setSelectedMembers, setSpaceInfo, setCtbSchedule, setDisbSchedule, setGoalAmount,setUserSpaces } = spacesSlice.actions
 
 export default spacesSlice.reducer
