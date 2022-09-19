@@ -1,18 +1,28 @@
-import React from 'react'
-import { Box, Text, Avatar, Pressable, HStack } from 'native-base'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { useNavigation} from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Icon from 'react-native-remix-icon' //Fix/Add types
-import deployedContracts from "@spaces/blockchain/spaces_contracts.json"
+import React from 'react';
+import { Box, Text, Avatar, Pressable, HStack } from 'native-base';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Icon from 'react-native-remix-icon'; //Fix/Add types
+import deployedContracts from '@spaces/blockchain/spaces_contracts.json';
 //Screens
-import { HomeScreen, DummyScreen } from '@spaces/features/essentials'
-import { SpacesScreen, AddNameScreen, SelectContactsScreen, CustomizeScreen, SetRoscaGoalScreen, RoscaHomeScreen } from '@spaces/features/spaces'
-import { MoreScreen, AccountScreen } from '@spaces/features/more'
-import FundRound from '../../features/spaces/FundRound'
+import { HomeScreen, DummyScreen } from '@spaces/features/essentials';
+import {
+  SpacesScreen,
+  AddNameScreen,
+  SelectContactsScreen,
+  CustomizeScreen,
+  SetRoscaGoalScreen,
+  RoscaHomeScreen,
+  CustomizePersonalScreen,
+  PersonalSavingsHomeScreen,
+  SetPersonalGoalScreen,
+} from '@spaces/features/spaces';
+import { MoreScreen, AccountScreen } from '@spaces/features/more';
+import FundRound from '../../features/spaces/FundRound';
 
-const MainStack = createNativeStackNavigator()
-const contracts = deployedContracts["44787"][0].contracts;
+const MainStack = createNativeStackNavigator();
+const contracts = deployedContracts['44787'][0].contracts;
 
 export default function MainNavigator() {
   return (
@@ -22,25 +32,48 @@ export default function MainNavigator() {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
-      <MainStack.Screen name="RoscaHome" component={RoscaHomeScreen} initialParams={contracts}/>
+      <MainStack.Screen
+        name="RoscaHome"
+        component={RoscaHomeScreen}
+        initialParams={contracts}
+      />
+      <MainStack.Screen
+        name="Personal Home"
+        component={PersonalSavingsHomeScreen}
+      />
       <MainStack.Group screenOptions={{ presentation: 'modal' }}>
         <MainStack.Screen name="Account" component={AccountScreen} />
         <MainStack.Screen name="DummyModal" component={DummyScreen} />
         <MainStack.Screen name="AddName" component={AddNameScreen} />
-        <MainStack.Screen name="SelectContacts" component={SelectContactsScreen} />
+        <MainStack.Screen
+          name="SelectContacts"
+          component={SelectContactsScreen}
+        />
+        <MainStack.Screen
+          name="Customize Space"
+          component={CustomizePersonalScreen}
+        />
+        <MainStack.Screen name="Your Goal" component={SetPersonalGoalScreen} />
         <MainStack.Screen name="Customize" component={CustomizeScreen} />
-        <MainStack.Screen name="RoscaGoal" component={SetRoscaGoalScreen} initialParams={contracts}/>
-        <MainStack.Screen name="FundRound" component={FundRound} initialParams={contracts}/>
+        <MainStack.Screen
+          name="RoscaGoal"
+          component={SetRoscaGoalScreen}
+          initialParams={contracts}
+        />
+        <MainStack.Screen
+          name="FundRound"
+          component={FundRound}
+          initialParams={contracts}
+        />
       </MainStack.Group>
     </MainStack.Navigator>
-  )
+  );
 }
 
 //creating a bottom tabs navigator
-const BottomTab = createBottomTabNavigator()
+const BottomTab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
-  
   return (
     <BottomTab.Navigator
       initialRouteName="Spaces"
@@ -114,7 +147,7 @@ function BottomTabNavigator() {
         })}
       />
     </BottomTab.Navigator>
-  )
+  );
 }
 
 function TabBarIcon(props) {
@@ -122,11 +155,11 @@ function TabBarIcon(props) {
     <Box bg={props.bgc} rounded="2xl" px="5" py="1" mt="1">
       <Icon size={24} {...props} />
     </Box>
-  )
+  );
 }
 
 function AccPressable() {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     // fix avatar text color to primary.700
     <Pressable
@@ -135,15 +168,22 @@ function AccPressable() {
         opacity: pressed ? 0.5 : 1,
       })}
     >
-      <Avatar bg="#0F766E" ml="2" source={{ uri: 'https://images.unsplash.com/photo-1592598015799-35c84b09394c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80' }} size="sm">
+      <Avatar
+        bg="#0F766E"
+        ml="2"
+        source={{
+          uri: 'https://images.unsplash.com/photo-1592598015799-35c84b09394c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+        }}
+        size="sm"
+      >
         AK
       </Avatar>
     </Pressable>
-  )
+  );
 }
 
 function HeaderRightIcons() {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <HStack space="5" mr="3">
       <Pressable
@@ -171,5 +211,5 @@ function HeaderRightIcons() {
         <Icon size={24} name="notification-4-fill" />
       </Pressable>
     </HStack>
-  )
+  );
 }

@@ -9,6 +9,7 @@ import {
   Icon,
   Pressable,
 } from 'native-base';
+
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -54,7 +55,16 @@ export default function SpacesScreen({navigation, route}) {
             </HStack>
           </Box>
 
-          <Box bg="#fff" rounded="xl" padding="2" width="50%">
+          <Pressable
+            bg="#fff"
+            rounded="xl"
+            padding="2"
+            marginRight="2"
+            width="50%"
+            onPress={() => {
+              navigation.navigate('Customize Space');
+            }}
+          >
             <AspectRatio w="100%">
               <Image
                 source={{
@@ -79,7 +89,7 @@ export default function SpacesScreen({navigation, route}) {
                 />
               </Box>
             </HStack>
-          </Box>
+          </Pressable>
         </HStack>
       </Box>
       
