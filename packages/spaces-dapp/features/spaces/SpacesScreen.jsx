@@ -12,8 +12,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function SpacesScreen() {
-  const navigation = useNavigation();
+export default function SpacesScreen({navigation, route}) {
+  //const navigation = useNavigation();
   return (
     <Box flex={1} bg="muted.50" justifyContent="flex-start" p={6}>
       <Box pt={2} alignItems="center">
@@ -82,7 +82,7 @@ export default function SpacesScreen() {
           </Box>
         </HStack>
       </Box>
-
+      
       <Box>
         <Text py={3} fontSize="sm">
           Group Saving spaces

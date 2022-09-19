@@ -3,19 +3,20 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   selectedMembers: [],
   spaceInfo: {
+    // for space creation
     name: null,
     type: null, //personal, rosca, regular, mchango
-    members: [],
-    goalSchedule: {},
-    goalAmount: null
+    members: [], //!TODO always include creator. 
+    goalAmount: null,
+    ctbAmount: null,
+    ctbDay: "Monday",
+    ctbOccurence: "Weekly",
+    disbDay: "Tuesday",
+    disbOccurence: "Weekly",
+    creator: null //creator user address
   },
-  roscaSchedule: {
-      //daily/daily, mon/weekly/monthly
-      ctbSchedule: {day: "Mon", occurrence: "Weekly"},
-      //manual/manual, mon/weekly/monthly, date/once 
-      disbSchedule: {day: "Tue", occurrence: "Weekly"}
-    },
   userSpaces: {
+    // updated from contracts
     roscas: [],
     personal: [],
     regular: [],
@@ -37,23 +38,27 @@ const spacesSlice = createSlice({
       state.spaceInfo.type = spaceType
     },
     setCtbSchedule: (state, { payload } ) => {
-      state.roscaSchedule.ctbSchedule = payload,
-      state.spaceInfo.goalSchedule = state.roscaSchedule
+      state.spaceInfo.ctbDay = payload.day,
+      state.spaceInfo.ctbOccurence = payload.occurrence
     },
     setDisbSchedule: (state, { payload } ) => {
-      state.roscaSchedule.disbSchedule = payload,
-      state.spaceInfo.goalSchedule = state.roscaSchedule
+      state.spaceInfo.disbDay = payload.day,
+      state.spaceInfo.disbOccurence = payload.occurrence
+      
     },
     setGoalAmount: (state, { payload }) => {
+      const size = state.spaceInfo.members.length
       state.spaceInfo.goalAmount = payload
+      state.spaceInfo.ctbAmount = (size ? (payload/state.spaceInfo.members.length) : payload) 
     },
-    setUserSpaces: (state) => {
+    setUserSpaces: (state, { payload }) => {
+      state.spaceInfo.creator = payload
       if(state.spaceInfo.type === "rosca"){
         state.userSpaces.roscas.push(state.spaceInfo)
       }else if(state.spaceInfo.type === "personal"){
         state.userSpaces.personal.push(state.spaceInfo)
       }
-      console.log(state.userSpaces)
+      
     }
   }
 })

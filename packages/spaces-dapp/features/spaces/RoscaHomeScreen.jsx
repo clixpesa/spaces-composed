@@ -1,9 +1,41 @@
 import { Box, Text, Image, HStack, Button, Spacer, VStack, Progress, Avatar} from 'native-base'
 import { HeaderBackButton } from '@react-navigation/elements'
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import Web3 from "web3";
+import roscaContract from "../../../hardhat/artifacts/contracts/Rosca.sol/Rosca.json"
 
-export default function RoscaHomeScreen({navigation}) {
+const web3 = new Web3("https://alfajores-forno.celo-testnet.org");
+
+export default function RoscaHomeScreen({navigation, route}) {
+
+  const Spaces = route.params.Spaces
+  const contract = Spaces ? new web3.eth.Contract(Spaces.abi, Spaces.address) : null
+
+  const [isFetching, setIsFetching] = useState(false)
+  const [roscaAddress, setRoscaAddress] = useState("0x36Be549243cE18262f07Ad131d8525c1cF4ed0b4")
+  const [roscaDetails, setRoscaDetails] = useState("")
+
+  useEffect(() => {
+    setIsFetching(true)
+    async function fetchSpaces(){
+      const result = (await contract?.methods.returnSpaces().call())
+      console.log(result)
+      setRoscaAddress(result[result.length - 1])
+    }
+    async function fetchSpaceData(){
+      const rcContract = Spaces ? new web3.eth.Contract(roscaContract.abi, roscaAddress) : null
+      const roscaData = (await rcContract.methods.getDetails().call())
+      console.log(roscaData)
+    }
+    try {
+      Promise.all(fetchSpaceData())   
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsFetching(false)
+    }
+  }, [navigation])
  
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -14,6 +46,8 @@ export default function RoscaHomeScreen({navigation}) {
       }
     });
   }, [navigation]); 
+
+  
 
   
   const prog = (300.89/5000.00)*100
