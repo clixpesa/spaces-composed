@@ -106,7 +106,8 @@ contract Rosca {
             uint activeMembers,
             uint currentRound,
             address creator,
-            uint256 roscaBal
+            uint256 roscaBal,
+            address roscaAddress
         )
     {
         roscaName = RD.roscaName;
@@ -119,7 +120,8 @@ contract Rosca {
         currentRound = roundNo;
         creator = admins[0];
         activeMembers = members.length;
-        roscaBal = roscaBalance;
+        roscaBal = getRoscaBalance();
+        roscaAddress = address(this);
         return (
             roscaName,
             imgLink,
@@ -131,7 +133,8 @@ contract Rosca {
             activeMembers,
             currentRound,
             creator,
-            roscaBal
+            roscaBal,
+            roscaAddress
         );
     }
 
@@ -140,12 +143,11 @@ contract Rosca {
     }
 
     function getRoscaBalance() public view returns (uint256) {
-        address roscaAddress = address(this);
-        return cUSDToken.balanceOf(roscaAddress);
+        return address(this).balance;
     }
 
     function getMemberBalance() public view returns (uint256) {
-        return cUSDToken.balanceOf(members[0]);
+        return members[0].balance;
     }
 
     function joinRosca(string calldata authCode) external {
@@ -209,9 +211,13 @@ contract Rosca {
         );
         //change to be transfer with cUSDToken
         //cUSDToken.approve(address(this), amount);
-        cUSDToken.transferFrom(msg.sender, address(this), amount);
-        /*(bool sent, /*bytes memory data) = dueMember.call{value: (RD.goalAmount * 1 ether) }("");
-        require(sent, "Failed to send Ether");*/
+        //payable(msg.sender).transfer(amount);
+        //cUSDToken.transferFrom(msg.sender, address(this), amount);
+        (
+            bool sent, /*bytes memory data*/
+
+        ) = address(this).call{value: amount}("");
+        require(sent, "Failed to send CELO");
         contributions[msg.sender] = contributions[msg.sender].add(amount);
         goalBalance = goalBalance.add(amount);
         roscaBalance = getRoscaBalance();
@@ -236,9 +242,12 @@ contract Rosca {
         require(isMember[dueMember], "Due member is not a member! Reary?!");
         //change to be transfer with cUSDToken
         //cUSDToken.transferFrom(address(this), dueMember, RD.goalAmount);
-        /*(bool sent, /*bytes memory data) = dueMember.call{value: (RD.goalAmount * 1 ether) }("");
-        require(sent, "Failed to send Ether");*/
-        if (cUSDToken.transfer(dueMember, RD.goalAmount)) {
+        (
+            bool sent, /*bytes memory data*/
+
+        ) = dueMember.call{value: (RD.goalAmount)}("");
+        require(sent, "Failed to send CELO");
+        if (sent) {
             goalBalance = 0;
             //Reset Contributons
             for (uint i = 0; i < members.length; i++) {

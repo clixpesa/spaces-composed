@@ -9,6 +9,7 @@ import deployedContracts from "@spaces/blockchain/spaces_contracts.json"
 import { HomeScreen, DummyScreen } from '@spaces/features/essentials'
 import { SpacesScreen, AddNameScreen, SelectContactsScreen, CustomizeScreen, SetRoscaGoalScreen, RoscaHomeScreen } from '@spaces/features/spaces'
 import { MoreScreen, AccountScreen } from '@spaces/features/more'
+import FundRound from '../../features/spaces/FundRound'
 
 const MainStack = createNativeStackNavigator()
 const contracts = deployedContracts["44787"][0].contracts;
@@ -29,6 +30,7 @@ export default function MainNavigator() {
         <MainStack.Screen name="SelectContacts" component={SelectContactsScreen} />
         <MainStack.Screen name="Customize" component={CustomizeScreen} />
         <MainStack.Screen name="RoscaGoal" component={SetRoscaGoalScreen} initialParams={contracts}/>
+        <MainStack.Screen name="FundRound" component={FundRound} initialParams={contracts}/>
       </MainStack.Group>
     </MainStack.Navigator>
   )
@@ -41,7 +43,7 @@ function BottomTabNavigator() {
   
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Spaces"
       screenOptions={{
         tabBarStyle: { height: 60 },
       }}

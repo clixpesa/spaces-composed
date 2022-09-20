@@ -1,42 +1,27 @@
-import { Box, Text, Image, HStack, Button, Spacer, VStack, Progress, Avatar} from 'native-base'
+import { Box, Text, Image, HStack, Button, Spacer, VStack, Progress, Avatar, Spinner} from 'native-base'
 import { HeaderBackButton } from '@react-navigation/elements'
 import { useLayoutEffect, useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { getRosca, getRoscaAddress } from './spacesSlice'
+import { useWalletConnect } from "@walletconnect/react-native-dapp"
 import Web3 from "web3";
-import roscaContract from "../../../hardhat/artifacts/contracts/Rosca.sol/Rosca.json"
 
 const web3 = new Web3("https://alfajores-forno.celo-testnet.org");
 
 export default function RoscaHomeScreen({navigation, route}) {
-
+  const connector = useWalletConnect()
+  const dispatch = useDispatch()
   const Spaces = route.params.Spaces
+  const { roscaDetails, isLoading, roscaAddress } = useSelector((state) => state.spaces)
+  console.log(roscaDetails)
   const contract = Spaces ? new web3.eth.Contract(Spaces.abi, Spaces.address) : null
-
   const [isFetching, setIsFetching] = useState(false)
-  const [roscaAddress, setRoscaAddress] = useState("0x36Be549243cE18262f07Ad131d8525c1cF4ed0b4")
-  const [roscaDetails, setRoscaDetails] = useState("")
+
 
   useEffect(() => {
-    setIsFetching(true)
-    async function fetchSpaces(){
-      const result = (await contract?.methods.returnSpaces().call())
-      console.log(result)
-      setRoscaAddress(result[result.length - 1])
-    }
-    async function fetchSpaceData(){
-      const rcContract = Spaces ? new web3.eth.Contract(roscaContract.abi, roscaAddress) : null
-      const roscaData = (await rcContract.methods.getDetails().call())
-      console.log(roscaData)
-    }
-    try {
-      Promise.all(fetchSpaceData())   
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsFetching(false)
-    }
-  }, [navigation])
- 
+    dispatch(getRoscaAddress(contract))
+  }, [dispatch])
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: (props) => {
@@ -48,25 +33,30 @@ export default function RoscaHomeScreen({navigation, route}) {
   }, [navigation]); 
 
   
-
-  
   const prog = (300.89/5000.00)*100
+  if (isLoading || isFetching ) {
+    return (
+      <Spinner size="lg"/>
+    );
+  }
   return (
+    
     <Box flex={1} bg="muted.100" >
       <Image source={{
-      uri: "https://images.unsplash.com/photo-1493655430214-3dd7718460bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+      uri: roscaDetails.imgLink
       }} alt="Your groups photo" height="35%" minH={240}/>
       <Box position="absolute" top="11%" left={3}>
         <Box bg="rgba(52, 52, 52, 0.3)" w="60%" rounded="lg">
           <Box p={3}>
-            <Text fontSize="md" fontWeight="medium" color="white" lineHeight="xs">Balance (cUSD)</Text>
-          <Text fontSize="3xl" fontWeight="semibold" color="white">500.00</Text>
-          <Text fontSize="sm" color="white" lineHeight="xs">≈ 50000.00 KES</Text>
+            <Text fontSize="md" fontWeight="medium" color="white" lineHeight="xs">Balance (CELO)</Text>
+          <Text fontSize="3xl" fontWeight="semibold" color="white">{roscaDetails.roscaBal}</Text>
+          <Text fontSize="sm" color="white" lineHeight="xs">≈ {roscaDetails.roscaBal * 92.7} KES</Text>
         </Box>
           </Box>
         <HStack space={2} mt={3}>
           <Button variant="subtle" rounded="3xl" w="25%"
             _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}
+            onPress={()=>navigation.navigate("FundRound")}
           >Fund</Button>
           <Button variant="subtle" rounded="3xl" w="25%"
             _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}
@@ -76,17 +66,18 @@ export default function RoscaHomeScreen({navigation, route}) {
           >More</Button>
           <Button variant="subtle" rounded="3xl" w="15%"
             _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}
+            onPress={() => dispatch(getRosca(roscaAddress))}
           >set</Button>
         </HStack>
       </Box>
       <Box alignItems="center" mt={3}>
         <HStack mx="8" my="2">
           <Text fontWeight="medium" color="blueGray.600">
-            Round: 2
+            Round: {roscaDetails.currentRound}
           </Text>
           <Spacer />
           <Text _light={{ color: 'primary.600' }} fontWeight="medium" >
-            Due for: Abedy
+            Due for: { roscaDetails.creator ? roscaDetails.creator.slice(0,6) : "Next"}
           </Text>
         </HStack>
         <Box bg="white" roundedTop="xl" roundedBottom="md" width="95%" >
@@ -97,7 +88,7 @@ export default function RoscaHomeScreen({navigation, route}) {
               </Text>
               <Spacer />
               <Text _light={{ color: 'muted.500' }} fontWeight="medium" pt={1}>
-                300.89/5000.00 cUSD
+                {roscaDetails.roscaBal} / {roscaDetails.goalAmount}
               </Text>
             </HStack>
             <Progress colorScheme="primary" value={prog} mx="4" bg="primary.100"/>
@@ -190,3 +181,4 @@ export default function RoscaHomeScreen({navigation, route}) {
     </Box>
   )
 }
+

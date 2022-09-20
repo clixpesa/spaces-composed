@@ -31,14 +31,18 @@ export default function SetRoscaGoalScreen({navigation, route}) {
   const createRosca = async () => {
 		setIsLoading(true);
     const stableTokenAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
-    //Rosca details. 
+    const ctbAmount = web3.utils.toWei(spaceInfo.ctbAmount.toString())
+    const goalAmount = web3.utils.toWei(spaceInfo.goalAmount.toString())
+    console.log(ctbAmount)
     const imageLink = "https://images.unsplash.com/photo-1493655430214-3dd7718460bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
 		try {
 			let txData = await contract?.methods
 				.createRosca(stableTokenAddress, [
           spaceInfo.name, 
-          imageLink, 
-          spaceInfo.goalAmount, 
+          imageLink,
+          spaceInfo.authCode, 
+          goalAmount, 
+          ctbAmount,
           spaceInfo.ctbDay, 
           spaceInfo.ctbOccurence, 
           spaceInfo.disbDay, 

@@ -5,7 +5,7 @@
       "chainId": "44787",
       "contracts": {
         "Spaces": {
-          "address": "0x967bb54ccE3458E8250faB98f6DBfcd079f87f96",
+          "address": "0x68E683ccC6e3307c6E03221f8B554AE229750B4B",
           "abi": [
             {
               "anonymous": false,
