@@ -2,22 +2,66 @@ import { Box, Text, VStack, Spacer, Button, Stack, HStack, Input, Pressable, Act
 import { TouchableOpacity } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
+import Web3 from "web3"
+import { useWalletConnect } from "@walletconnect/react-native-dapp";
 import { useNavigation } from '@react-navigation/native'
 import { setCtbSchedule, setDisbSchedule, setGoalAmount, setUserSpaces } from './spacesSlice'
 
-export default function SetRoscaGoalScreen() {
+const web3 = new Web3("https://alfajores-forno.celo-testnet.org");
+
+export default function SetRoscaGoalScreen({navigation, route}) {
+  const Spaces = route.params.Spaces
+  const contract = Spaces ? new web3.eth.Contract(Spaces.abi, Spaces.address) : null
+
+  const connector = useWalletConnect()
   const dispatch = useDispatch()
-  const navigation = useNavigation()
-  const roscaSchedule = useSelector((state) => state.spaces.roscaSchedule)
   const spaceInfo = useSelector((state) => state.spaces.spaceInfo)
+
   const [amount, setAmount] = useState(0)
   const { isOpen, onOpen, onClose } = useDisclose()
   const [isSetCtb, setIsSetCtb] = useState(false)
-  const [schedule, setSchedule] = useState(roscaSchedule.ctbSchedule)
-  //const [disbSchedule, setDisbSchedule] = useState({})
+  const [schedule, setSchedule] = useState({day: spaceInfo.ctbDay, occurrence: spaceInfo.ctbOccurence})
+  const userAddress = connector.accounts[0]
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   const members = useSelector((state) => state.spaces.spaceInfo.members)
+
+  const createRosca = async () => {
+		setIsLoading(true);
+    const stableTokenAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
+    const ctbAmount = web3.utils.toWei(spaceInfo.ctbAmount.toString())
+    const goalAmount = web3.utils.toWei(spaceInfo.goalAmount.toString())
+    console.log(ctbAmount)
+    const imageLink = "https://images.unsplash.com/photo-1493655430214-3dd7718460bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+		try {
+			let txData = await contract?.methods
+				.createRosca(stableTokenAddress, [
+          spaceInfo.name, 
+          imageLink,
+          spaceInfo.authCode, 
+          goalAmount, 
+          ctbAmount,
+          spaceInfo.ctbDay, 
+          spaceInfo.ctbOccurence, 
+          spaceInfo.disbDay, 
+          spaceInfo.disbOccurence
+        ]).encodeABI();
+
+			await connector.sendTransaction({
+				from: userAddress,
+				to: Spaces.address,
+				data: txData,
+			});
+		} catch (e) {
+			console.log(e);
+		} finally {
+			setIsLoading(false);
+      navigation.navigate("RoscaHome")
+		}
+	};
+
   return (
     <Box flex={1} bg="muted.100" alignItems="center">
       <VStack space={3}>
@@ -30,17 +74,18 @@ export default function SetRoscaGoalScreen() {
               <Text fontSize="lg" py={3} pl={4} fontWeight="semibold">cUSD</Text>
               <Input py={2} textAlign="right" minW="2/3" placeholder="0.00" size="lg" keyboardType="numeric"
               InputRightElement={<Text fontSize="md" fontWeight="medium" pr={3}>cUSD</Text>}
-              value={amount} onChangeText={(text) => setAmount(text)} 
-               onSubmitEditing = {() => dispatch(setGoalAmount(amount))}/>
+              value={amount} onChangeText={(text) => setAmount(text)}
+              onClose = {() => dispatch(setGoalAmount(amount))} 
+              onSubmitEditing = {() => dispatch(setGoalAmount(amount))}/>
             </HStack>
             <Text px={5} mb={3}>Each member contributes: {members.length > 0 ? (amount/members.length).toFixed(2).toString() : "some"} cUSD</Text>
           </Box>
           <HStack bg="white" py={3} px={4} justifyContent="space-between" rounded="md">
             <Text fontSize="md">Contribution Schedule:</Text>
             <Pressable onPress={onOpen} onPressOut={()=>setIsSetCtb(true)}>
-              {(roscaSchedule.ctbSchedule.day !== "every") ? (
+              {(spaceInfo.ctbDay !== "every") ? (
                 <Text color="primary.600" fontSize="md">
-                  {roscaSchedule.ctbSchedule.occurrence} on {(roscaSchedule.ctbSchedule.day).slice(0,3)}
+                  {spaceInfo.ctbOccurence} on {(spaceInfo.ctbDay).slice(0,3)}
                 </Text>) : (
                   <Text color="primary.600" fontSize="md">
                   Everyday
@@ -51,9 +96,9 @@ export default function SetRoscaGoalScreen() {
           <HStack bg="white" p={4} pt={3} justifyContent="space-between" roundedTop="md" roundedBottom="xl">
             <Text fontSize="md">Disbursment Schedule:</Text>
             <Pressable  onPress={onOpen} onPressOut={()=>setIsSetCtb(false)}>
-              {(roscaSchedule.disbSchedule.day !== "every") ? (
+              {(spaceInfo.disbDay !== "every") ? (
                 <Text color="primary.600" fontSize="md">
-                  {roscaSchedule.disbSchedule.occurrence} on {(roscaSchedule.disbSchedule.day).slice(0,3)}
+                  {spaceInfo.disbOccurence} on {(spaceInfo.disbDay).slice(0,3)}
                 </Text>) : (
                 <Text color="primary.600" fontSize="md">
                   Everyday
@@ -113,11 +158,11 @@ export default function SetRoscaGoalScreen() {
         <Stack alignItems="center" space={3} mb={8}>
           <Button variant="subtle" rounded="3xl" w="60%"
       _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}>Skip</Button>
-        <Button rounded="3xl" w="60%"
+        <Button isLoading={isLoading} isLoadingText="Submitting" rounded="3xl" w="60%"
       _text={{ color: 'primary.100', fontWeight: 'semibold', mb: '0.5' }}
       onPress={()=>{
-        navigation.navigate("RoscaHome")
-        dispatch(setUserSpaces())
+        createRosca()
+        dispatch(setUserSpaces(userAddress))
       }}>Continue</Button>
         </Stack>
       </VStack>

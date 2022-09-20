@@ -1,9 +1,35 @@
-import { Box, Stack, Text, Heading, HStack, Button, Icon, Image, ScrollView } from 'native-base'
-import { Feather } from 'react-native-vector-icons' //Fix feather not font
+import { Box, Stack, Text, Heading, HStack, Button, Icon, Image, ScrollView, Spinner } from 'native-base'
+import { Feather } from '@expo/vector-icons' //Fix feather not font
+import Web3 from "web3";
+import { useEffect, useState } from 'react';
 
-export default function HomeScreen() {
+const web3 = new Web3("https://alfajores-forno.celo-testnet.org");
+
+export default function HomeScreen({ navigation, route }) {
+  const Greeter = route.params.Greeter
+  const contract = Greeter ? new web3.eth.Contract(Greeter.abi, Greeter.address) : null
+
+  const [gettingGreeting, setGettingGreeting] = useState(false)
+  const [greeting, setGreeting] = useState("")
+
+  useEffect(() => {
+    setGettingGreeting(true)
+    async function fetchGreeting(){
+      const result = (await contract?.methods.greet().call())
+      setGreeting(result)
+    }
+    try {
+      fetchGreeting()    
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setGettingGreeting(false)
+    }
+  }, [navigation])
+  
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      {gettingGreeting ? <Spinner accessibilityLabel="Loading greeting" /> : null}
       <Box flex={1} bg="#F5F5F5" alignItems="center">
         <Box mt="2" bg="#fff" width="95%" rounded="2xl" shadow="none">
           <Stack mx="4" my="3">
@@ -68,6 +94,7 @@ export default function HomeScreen() {
           </HStack>
         </Box>
       </Box>
+      <Text>{greeting}</Text>
     </ScrollView>
   )
 }
