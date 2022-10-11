@@ -10,15 +10,15 @@ import {
   AspectRatio,
   SectionList,
   Pressable,
-} from 'native-base'
-import { Feather } from 'react-native-vector-icons'
-import Remixicon from 'react-native-remix-icon' //Fix/Add types
-import { useNavigation } from '@react-navigation/native'
-import { SectionHeader } from '@spaces/components'
-import { useWalletConnect } from "@walletconnect/react-native-dapp";
+} from 'native-base';
+import { Feather } from 'react-native-vector-icons';
+import Remixicon from 'react-native-remix-icon'; //Fix/Add types
+import { useNavigation } from '@react-navigation/native';
+import { SectionHeader } from '@spaces/components';
+import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
-export default function AccountScreen({navigation}){
-  const connector = useWalletConnect()
+export default function AccountScreen({ navigation }) {
+  const connector = useWalletConnect();
   const USER = {
     fullName: 'Akimbo Keya',
     nameInitials: 'AK',
@@ -27,7 +27,7 @@ export default function AccountScreen({navigation}){
     phoneNo: '712345678',
     accountClass: 'Standard',
     rewardAmt: '800',
-  }
+  };
   const LINKS = [
     {
       sectionTitle: 'General',
@@ -139,7 +139,7 @@ export default function AccountScreen({navigation}){
         },
       ],
     },
-  ]
+  ];
   return (
     <SectionList
       bg="muted.50"
@@ -155,29 +155,56 @@ export default function AccountScreen({navigation}){
                 {USER.userName} | {USER.countryCode} {USER.phoneNo}{' '}
               </Text>
             </VStack>
-            <Avatar bg="#0F766E" ml="2" source={{ uri: 'https://bit.ly/broken-link' }} size="md">
+            <Avatar
+              bg="#0F766E"
+              ml="2"
+              source={{ uri: 'https://bit.ly/broken-link' }}
+              size="md"
+            >
               {USER.nameInitials}
             </Avatar>
           </HStack>
           <HStack space={3} mt={3}>
             <Button
               leftIcon={
-                <Icon as={Feather} name="chevrons-up" size="md" color="primary.600" mr="1" />
+                <Icon
+                  as={Feather}
+                  name="chevrons-up"
+                  size="md"
+                  color="primary.600"
+                  mr="1"
+                />
               }
               variant="subtle"
               rounded="3xl"
               pr="4"
-              _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}
+              _text={{
+                color: 'primary.600',
+                fontWeight: 'semibold',
+                mb: '0.5',
+              }}
               onPress={() => console.log('transfer')}
             >
               Upgrade
             </Button>
             <Button
-              leftIcon={<Icon as={Feather} name="user-plus" size="md" color="primary.600" mr="1" />}
+              leftIcon={
+                <Icon
+                  as={Feather}
+                  name="user-plus"
+                  size="md"
+                  color="primary.600"
+                  mr="1"
+                />
+              }
               variant="subtle"
               rounded="3xl"
               pr="4"
-              _text={{ color: 'primary.600', fontWeight: 'semibold', mb: '0.5' }}
+              _text={{
+                color: 'primary.600',
+                fontWeight: 'semibold',
+                mb: '0.5',
+              }}
               onPress={() => console.log('transfer')}
             >
               Invite friends
@@ -195,7 +222,12 @@ export default function AccountScreen({navigation}){
               />
             </AspectRatio>
             <VStack position="absolute" my={2} mx={3} space={3}>
-              <Text maxW="80%" lineHeight="md" color="white" fontWeight="medium">
+              <Text
+                maxW="80%"
+                lineHeight="md"
+                color="white"
+                fontWeight="medium"
+              >
                 Refer a friend and you can both receive 50 cPEX
               </Text>
               <HStack alignItems="center" space={2}>
@@ -215,7 +247,11 @@ export default function AccountScreen({navigation}){
         </Box>
       )}
       renderItem={({ item }) => (
-        <LinkItem iconName={item.iconName} title={item.title} screen={item.screen} />
+        <LinkItem
+          iconName={item.iconName}
+          title={item.title}
+          screen={item.screen}
+        />
       )}
       ListFooterComponent={() => (
         <VStack alignItems="center" space={3} mt="3">
@@ -244,11 +280,11 @@ export default function AccountScreen({navigation}){
         </VStack>
       )}
     />
-  )
+  );
 }
 
 function LinkItem(props) {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <Pressable onPress={() => navigation.navigate(props.screen)}>
       <HStack alignItems="center" mb="3" width="90%" ml="5%">
@@ -257,8 +293,14 @@ function LinkItem(props) {
         <Text color="blueGray.700" width="78%" ml={3} fontWeight="medium">
           {props.title}
         </Text>
-        <Icon as={Feather} name="chevron-right" size="md" color="blueGray.700" mx="3" />
+        <Icon
+          as={Feather}
+          name="chevron-right"
+          size="md"
+          color="blueGray.700"
+          mx="3"
+        />
       </HStack>
     </Pressable>
-  )
+  );
 }
